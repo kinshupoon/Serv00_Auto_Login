@@ -8,7 +8,8 @@ on:
 
 env:
   ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
-
+  EMAIL: ${{ secrets.EMAIL }}
+  
 jobs:  
   login:  
     runs-on: ubuntu-latest  
@@ -32,3 +33,12 @@ jobs:
         run: |  
           set -e  
           xvfb-run --server-args="-screen 0 1280x1024x24" node login.js
+
+      - name: Auto green
+        run: |
+          git config --local user.email "$EMAIL"
+          git config --local user.name "${{ github.actor }}"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git pull --rebase
+          git commit --allow-empty -m "Auto green"
+          git push    
