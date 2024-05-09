@@ -1,10 +1,9 @@
 name: Login
 
 on:
-  workflow_dispatch:
-  
   schedule:
     - cron: '41 9 * * 3'
+  workflow_dispatch:    # 允许手动执行
 
 env:
   ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON }}
@@ -13,6 +12,9 @@ env:
 jobs:  
   login:  
     runs-on: ubuntu-latest  
+
+    permissions:
+      contents: write
   
     steps:  
       - name: Checkout repository  
