@@ -1,0 +1,46 @@
+name: Login
+
+on:
+  schedule:
+    - cron: '30 8 * * 5'
+  workflow_dispatch:    # 允许手动执行
+
+env:
+  ACCOUNTS_JSON: ${{ secrets.ACCOUNTS_JSON2 }}
+  EMAIL: ${{ secrets.EMAIL }}
+  
+jobs:  
+  login:  
+    runs-on: ubuntu-latest  
+
+    permissions:
+      contents: write
+  
+    steps:  
+      - name: Checkout repository  
+        uses: actions/checkout@v3  
+  
+      - name: Set up Node.js  
+        uses: actions/setup-node@v3  
+        with:  
+          node-version: '20.x'  
+  
+      - name: Install dependencies  
+        run: npm install puppeteer  
+  
+      - name: Create accounts.json  
+        run: echo "$ACCOUNTS_JSON" > accounts.json  
+  
+      - name: Login to website  
+        run: |  
+          set -e  
+          xvfb-run --server-args="-screen 0 1280x1024x24" node ct8login.js
+
+      - name: Auto green
+        run: |
+          git config --local user.email "$EMAIL"
+          git config --local user.name "${{ github.actor }}"
+          git remote set-url origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git pull --rebase
+          git commit --allow-empty -m "Auto green"
+          git push    
