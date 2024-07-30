@@ -14,7 +14,7 @@ const puppeteer = require('puppeteer');
 
     try {
       // 修改网址为新的登录页面
-      await page.goto('https://panel.ct8.p/login/?next=/');
+      await page.goto('https://panel.ct8.pl/login/?next=/');
 
       // 清空用户名输入框的原有值
       const usernameInput = await page.$('#id_username');
