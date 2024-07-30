@@ -1,4 +1,4 @@
-name: Login
+name: CT8Login
 
 on:
   schedule:
