@@ -1,8 +1,8 @@
 name: CT8Login
 
 on:
-  schedule:
-    - cron: '30 8 * * 5'
+  # schedule:
+  #   - cron: '30 8 * * 5'
   workflow_dispatch:    # 允许手动执行
 
 env:
